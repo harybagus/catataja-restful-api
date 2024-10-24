@@ -4,18 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class User extends Model
+class Note extends Model
 {
-    protected $table = "users";
+    protected $table = "notes";
     protected $primaryKey = "id";
     protected $keyType = "int";
     public $incrementing = true;
     public $timestamps = true;
 
-    public function notes(): HasMany
+    public function user(): BelongsTo
     {
-        return $this->hasMany(Note::class, "user_id", "id");
+        return $this->belongsTo(Note::class, "user_id", "id");
     }
 }
