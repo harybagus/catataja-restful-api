@@ -164,4 +164,80 @@ class UserTest extends TestCase
                 ]
             ]);
     }
+
+    public function testUpdateNameSuccess()
+    {
+        $this->seed([UserSeeder::class]);
+        $oldUser = User::where("email", "test@gmail.com")->first();
+
+        $this->patch(
+            "/api/users/current",
+            [
+                "name" => "New Name"
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "email" => "test@gmail.com",
+                    "name" => "New Name"
+                ]
+            ]);
+
+        $newUser = User::where("email", "test@gmail.com")->first();
+        self::assertNotEquals($oldUser->name, $newUser->name);
+    }
+
+    public function testUpdatePasswordSuccess()
+    {
+        $this->seed([UserSeeder::class]);
+        $oldUser = User::where("email", "test@gmail.com")->first();
+
+        $this->patch(
+            "/api/users/current",
+            [
+                "password" => "new123"
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "email" => "test@gmail.com",
+                    "name" => "test"
+                ]
+            ]);
+
+        $newUser = User::where("email", "test@gmail.com")->first();
+        self::assertNotEquals($oldUser->password, $newUser->password);
+    }
+
+    public function testUpdateFailed()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->patch(
+            "/api/users/current",
+            [
+                "name" => "Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus",
+                "password" => "123"
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(400)
+            ->assertJson([
+                "errors" => [
+                    "name" => [
+                        "The name field must not be greater than 100 characters."
+                    ],
+                    "password" => [
+                        "The password field must be at least 6 characters."
+                    ]
+                ]
+            ]);
+    }
 }
