@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserController extends Controller
 {
@@ -19,7 +21,7 @@ class UserController extends Controller
             throw new HttpResponseException(response([
                 "errors" => [
                     "email" => [
-                        "Email already registered"
+                        "Email already registered."
                     ]
                 ]
             ], 400));
@@ -30,5 +32,26 @@ class UserController extends Controller
         $user->save();
 
         return (new UserResource($user))->response()->setStatusCode(201);
+    }
+
+    public function login(UserLoginRequest $request): UserResource
+    {
+        $data = $request->validated();
+
+        $user = User::where("email", $data["email"])->first();
+        if (!$user || !Hash::check($data["password"], $user->password)) {
+            throw new HttpResponseException(response([
+                "errors" => [
+                    "message" => [
+                        "Email or password wrong."
+                    ]
+                ]
+            ], 401));
+        }
+
+        $user->token = Str::uuid()->toString();
+        $user->save();
+
+        return new UserResource($user);
     }
 }

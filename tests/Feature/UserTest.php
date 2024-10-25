@@ -2,9 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+
+use function PHPUnit\Framework\assertEquals;
 
 class UserTest extends TestCase
 {
@@ -57,7 +61,57 @@ class UserTest extends TestCase
             ->assertJson([
                 "errors" => [
                     "email" => [
-                        "Email already registered"
+                        "Email already registered."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testLoginSuccess()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->post("/api/users/login", [
+            "email" => "test@gmail.com",
+            "password" => "test123"
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "email" => "test@gmail.com",
+                    "name" => "test"
+                ]
+            ]);
+
+        $user = User::where("email", "test@gmail.com")->first();
+        self::assertNotNull($user->token);
+    }
+
+    public function testLoginFailedEmailNotFound()
+    {
+        $this->post("/api/users/login", [
+            "email" => "test@gmail.com",
+            "password" => "test123"
+        ])->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "Email or password wrong."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testLoginFailedPasswordWrong()
+    {
+        $this->seed([UserSeeder::class]);
+        $this->post("/api/users/login", [
+            "email" => "test@gmail.com",
+            "password" => "wrong123"
+        ])->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "Email or password wrong."
                     ]
                 ]
             ]);
