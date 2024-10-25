@@ -104,6 +104,7 @@ class UserTest extends TestCase
     public function testLoginFailedPasswordWrong()
     {
         $this->seed([UserSeeder::class]);
+
         $this->post("/api/users/login", [
             "email" => "test@gmail.com",
             "password" => "wrong123"
@@ -112,6 +113,53 @@ class UserTest extends TestCase
                 "errors" => [
                     "message" => [
                         "Email or password wrong."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetSuccess()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->get("/api/users/current", [
+            "Authorization" => "test"
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "email" => "test@gmail.com",
+                    "name" => "test"
+                ]
+            ]);
+    }
+
+    public function testGetUnauthorized()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->get("/api/users/current")
+            ->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "Unauthorized."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetInvalidToken()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->get("/api/users/current", [
+            "Authorization" => "wrong"
+        ])
+            ->assertStatus(401)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "Unauthorized."
                     ]
                 ]
             ]);
