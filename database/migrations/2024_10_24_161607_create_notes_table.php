@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Pinned;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->string("title", 100)->nullable(false);
             $table->string("description", 255)->nullable(false);
-            $table->enum("pinned", ["false", "true"])->nullable(false);
+            $table->enum("pinned", [Pinned::TRUE->value, Pinned::FALSE->value])->nullable(false)->default(Pinned::FALSE->value);
             $table->unsignedBigInteger("user_id")->nullable(false);
             $table->timestamps();
 
-            $table->foreign("user_id")->on("users")->references("id");
+            $table->foreign("user_id")->on("users")->references("id")->onDelete('cascade');
         });
     }
 
