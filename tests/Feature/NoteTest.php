@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\Pinned;
+use Database\Seeders\NoteSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -78,6 +79,45 @@ class NoteTest extends TestCase
                 "errors" => [
                     "message" => [
                         "Unauthorized."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetSuccess()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+
+        $this->get("/api/notes", [
+            "Authorization" => "test"
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    [
+                        "title" => "Getting Started with Laravel for Beginners",
+                        "description" => "This note provides a basic introduction to Laravel, covering installation, setup, and the essential components needed to build your first web application.",
+                        "pinned" => "false"
+                    ],
+                    [
+                        "title" => "Understanding RESTful APIs and Their Uses in Modern Applications",
+                        "description" => "Learn about RESTful APIs, how they work, and their importance in developing scalable web services. This note covers basic principles and implementation steps.",
+                        "pinned" => "true"
+                    ]
+                ]
+            ]);
+    }
+
+    public function testGetNotFound()
+    {
+        $this->seed([UserSeeder::class]);
+
+        $this->get("/api/notes", [
+            "Authorization" => "test"
+        ])->assertStatus(404)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "No notes found."
                     ]
                 ]
             ]);
