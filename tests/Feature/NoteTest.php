@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\Pinned;
+use App\Models\Note;
 use Database\Seeders\NoteSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -118,6 +119,78 @@ class NoteTest extends TestCase
                 "errors" => [
                     "message" => [
                         "No notes found."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testUpdateSuccess()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+        $note = Note::query()->limit(1)->first();
+
+        $this->put(
+            "/api/notes/" . $note->id,
+            [
+                "title" => "Best Practices for Writing Clean and Maintainable Code",
+                "description" => "This note discusses various coding best practices to ensure that your code is clean, readable, and maintainable. It includes tips for refactoring and adhering to coding standards."
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    "title" => "Best Practices for Writing Clean and Maintainable Code",
+                    "description" => "This note discusses various coding best practices to ensure that your code is clean, readable, and maintainable. It includes tips for refactoring and adhering to coding standards.",
+                    "pinned" => "false"
+                ]
+            ]);
+    }
+
+    public function testUpdateFailed()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+        $note = Note::query()->limit(1)->first();
+
+        $this->put(
+            "/api/notes/" . $note->id,
+            [
+                "title" => "Best Practices for Writing Clean and Maintainable Code",
+                "description" => ""
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(400)
+            ->assertJson([
+                "errors" => [
+                    "description" => [
+                        "The description field is required."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testUpdateNotFound()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+        $note = Note::query()->limit(1)->first();
+
+        $this->put(
+            "/api/notes/" . ($note->id + 10),
+            [
+                "title" => "Best Practices for Writing Clean and Maintainable Code",
+                "description" => "This note discusses various coding best practices to ensure that your code is clean, readable, and maintainable. It includes tips for refactoring and adhering to coding standards."
+            ],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(404)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "No note found."
                     ]
                 ]
             ]);
