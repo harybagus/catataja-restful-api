@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Pinned;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -78,5 +77,16 @@ class NoteController extends Controller
         $note->save();
 
         return new NoteResource($note);
+    }
+
+    public function delete(int $id): JsonResponse
+    {
+        $user = Auth::user();
+        $note = $this->getNoteById($id, $user);
+        $note->delete();
+
+        return response()->json([
+            "data" => true
+        ])->setStatusCode(200);
     }
 }

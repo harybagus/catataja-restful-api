@@ -195,4 +195,42 @@ class NoteTest extends TestCase
                 ]
             ]);
     }
+
+    public function testDeleteSuccess()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+        $note = Note::query()->limit(1)->first();
+
+        $this->delete(
+            "/api/notes/" . $note->id,
+            [],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(200)
+            ->assertJson([
+                "data" => true
+            ]);
+    }
+
+    public function testDeleteNotFound()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+        $note = Note::query()->limit(1)->first();
+
+        $this->delete(
+            "/api/notes/" . ($note->id + 10),
+            [],
+            [
+                "Authorization" => "test"
+            ]
+        )->assertStatus(404)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "No note found."
+                    ]
+                ]
+            ]);
+    }
 }
