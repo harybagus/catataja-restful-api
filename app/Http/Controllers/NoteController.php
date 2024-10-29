@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\NoteCreateRequest;
 use App\Http\Requests\NoteUpdateRequest;
+use App\Http\Resources\NoteCollection;
 use App\Http\Resources\NoteResource;
 use App\Models\Note;
 use App\Models\User;
@@ -14,22 +15,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class NoteController extends Controller
 {
-    private function getNotes(User $user)
-    {
-        $notes = Note::where("user_id", $user->id)->get();
-        if ($notes->isEmpty()) {
-            throw new HttpResponseException(response()->json([
-                "errors" => [
-                    "message" => [
-                        "No notes found."
-                    ]
-                ]
-            ])->setStatusCode(404));
-        }
-
-        return $notes;
-    }
-
     private function getNoteById(int $id, User $user)
     {
         $note = Note::where("id", $id)->where("user_id", $user->id)->first();
@@ -80,6 +65,36 @@ class NoteController extends Controller
             "unpinned" => NoteResource::collection($unPinnedNotes),
         ], 200);
     }
+
+    public function search(Request $request): NoteCollection
+    {
+        $user = Auth::user();
+
+        $query = Note::where('user_id', $user->id);
+
+        if ($keyword = $request->input('keyword')) {
+            $query->where(function ($query) use ($keyword) {
+                $query->where('title', 'like', '%' . $keyword . '%')
+                    ->orWhere('description', 'like', '%' . $keyword . '%');
+            });
+        }
+
+        $notes = $query->get();
+
+        if ($notes->isEmpty()) {
+            throw new HttpResponseException(response()->json([
+                "errors" => [
+                    "message" => [
+                        "No notes found."
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+
+        return new NoteCollection($notes);
+    }
+
+
 
     public function update(int $id, NoteUpdateRequest $request): NoteResource
     {

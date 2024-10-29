@@ -8,6 +8,7 @@ use Database\Seeders\NoteSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class NoteTest extends TestCase
@@ -102,8 +103,8 @@ class NoteTest extends TestCase
                 ],
                 "unpinned" => [
                     [
-                        "title" => "Getting Started with Laravel for Beginners",
-                        "description" => "This note provides a basic introduction to Laravel, covering installation, setup, and the essential components needed to build your first web application.",
+                        "title" => "Basic Laravel Concepts",
+                        "description" => "This note provides an overview of Laravel's core features and functionality, helping beginners understand how to build robust web applications.",
                         "pinned" => "false"
                     ],
                     [
@@ -120,6 +121,45 @@ class NoteTest extends TestCase
         $this->seed([UserSeeder::class]);
 
         $this->get("/api/notes", [
+            "Authorization" => "test"
+        ])->assertStatus(404)
+            ->assertJson([
+                "errors" => [
+                    "message" => [
+                        "No notes found."
+                    ]
+                ]
+            ]);
+    }
+
+    public function testSearchSuccess()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+
+        $this->get("/api/notes/search?keyword=basic", [
+            "Authorization" => "test"
+        ])->assertStatus(200)
+            ->assertJson([
+                "data" => [
+                    [
+                        "title" => "Basic Laravel Concepts",
+                        "description" => "This note provides an overview of Laravel's core features and functionality, helping beginners understand how to build robust web applications.",
+                        "pinned" => "false"
+                    ],
+                    [
+                        "title" => "Understanding RESTful APIs and Their Uses in Modern Applications",
+                        "description" => "Learn about RESTful APIs, how they work, and their importance in developing scalable web services. This note covers basic principles and implementation steps.",
+                        "pinned" => "true"
+                    ]
+                ]
+            ]);
+    }
+
+    public function testSearchNotFound()
+    {
+        $this->seed([UserSeeder::class, NoteSeeder::class]);
+
+        $this->get("/api/notes/search?keyword=none", [
             "Authorization" => "test"
         ])->assertStatus(404)
             ->assertJson([

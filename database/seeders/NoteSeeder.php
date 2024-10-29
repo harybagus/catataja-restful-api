@@ -18,8 +18,8 @@ class NoteSeeder extends Seeder
         $user = User::where("email", "test@gmail.com")->first();
 
         Note::create([
-            "title" => "Getting Started with Laravel for Beginners",
-            "description" => "This note provides a basic introduction to Laravel, covering installation, setup, and the essential components needed to build your first web application.",
+            "title" => "Basic Laravel Concepts",
+            "description" => "This note provides an overview of Laravel's core features and functionality, helping beginners understand how to build robust web applications.",
             "pinned" => Pinned::FALSE->value,
             "user_id" => $user->id
         ]);
