@@ -61,9 +61,24 @@ class NoteController extends Controller
     public function get(Request $request): JsonResponse
     {
         $user = Auth::user();
-        $notes = $this->getNotes($user);
 
-        return (NoteResource::collection($notes))->response()->setStatusCode(200);
+        $pinnedNotes = Note::where("pinned", "true")->where("user_id", $user->id)->get();
+        $unPinnedNotes = Note::where("pinned", "false")->where("user_id", $user->id)->get();
+
+        if ($pinnedNotes->isEmpty() && $unPinnedNotes->isEmpty()) {
+            throw new HttpResponseException(response()->json([
+                "errors" => [
+                    "message" => [
+                        "No notes found."
+                    ]
+                ]
+            ])->setStatusCode(404));
+        }
+
+        return response()->json([
+            "pinned" => NoteResource::collection($pinnedNotes),
+            "unpinned" => NoteResource::collection($unPinnedNotes),
+        ], 200);
     }
 
     public function update(int $id, NoteUpdateRequest $request): NoteResource

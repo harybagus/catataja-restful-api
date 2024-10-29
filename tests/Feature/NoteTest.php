@@ -93,16 +93,23 @@ class NoteTest extends TestCase
             "Authorization" => "test"
         ])->assertStatus(200)
             ->assertJson([
-                "data" => [
+                "pinned" => [
+                    [
+                        "title" => "Understanding RESTful APIs and Their Uses in Modern Applications",
+                        "description" => "Learn about RESTful APIs, how they work, and their importance in developing scalable web services. This note covers basic principles and implementation steps.",
+                        "pinned" => "true"
+                    ]
+                ],
+                "unpinned" => [
                     [
                         "title" => "Getting Started with Laravel for Beginners",
                         "description" => "This note provides a basic introduction to Laravel, covering installation, setup, and the essential components needed to build your first web application.",
                         "pinned" => "false"
                     ],
                     [
-                        "title" => "Understanding RESTful APIs and Their Uses in Modern Applications",
-                        "description" => "Learn about RESTful APIs, how they work, and their importance in developing scalable web services. This note covers basic principles and implementation steps.",
-                        "pinned" => "true"
+                        "title" => "Project Kickoff Meeting Notes",
+                        "description" => "Outline the main objectives, deliverables, and deadlines discussed during the project kickoff meeting. Ensure team alignment on responsibilities and expected outcomes.",
+                        "pinned" => "false"
                     ]
                 ]
             ]);

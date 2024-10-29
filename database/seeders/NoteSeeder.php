@@ -30,5 +30,12 @@ class NoteSeeder extends Seeder
             "pinned" => Pinned::TRUE->value,
             "user_id" => $user->id
         ]);
+
+        Note::create([
+            "title" => "Project Kickoff Meeting Notes",
+            "description" => "Outline the main objectives, deliverables, and deadlines discussed during the project kickoff meeting. Ensure team alignment on responsibilities and expected outcomes.",
+            "pinned" => Pinned::FALSE->value,
+            "user_id" => $user->id
+        ]);
     }
 }

@@ -104,24 +104,51 @@
                                 "schema": {
                                     "type": "object",
                                     "properties": {
-                                        "data": {
-                                            "type": "object",
-                                            "properties": {
-                                                "id": {
-                                                    "type": "number"
-                                                },
-                                                "title": {
-                                                    "type": "string"
-                                                },
-                                                "description": {
-                                                    "type": "string"
-                                                },
-                                                "pinned": {
-                                                    "type": "string",
-                                                    "enum": [
-                                                        "false",
-                                                        "true"
-                                                    ]
+                                        "pinned": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "pinned": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "true",
+                                                            "false"
+                                                        ]
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "unpinned": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "title": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "pinned": {
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "false",
+                                                            "true"
+                                                        ]
+                                                    }
                                                 }
                                             }
                                         },
