@@ -1,66 +1,69 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CatatAja RESTful API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API ini menyediakan endpoint untuk mengelola data pengguna (_user_) dan catatan (_note_). API ini memungkinkan pengguna untuk membuat, membaca, memperbarui, dan menghapus catatan, serta mengelola akun pengguna.
 
-## About Laravel
+## Kelompok 2
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Nama anggota kelompok:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Muhammad Fahreza (10220053)
+-   Bagus Hary (10220037)
+-   Galeh Pamungkas (10220077)
+-   Sirajuddin Ahmad Kurniawan (10220079)
+-   Thomas Febry Cahyono (10220063)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Teknologi yang Digunakan
 
-## Learning Laravel
+Berikut teknologi yang kami gunakan untuk membuat RESTful API ini:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   PHP
+-   Laravel
+-   MySQL
+-   RESTful API
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Fitur
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   **User API**:
 
-## Laravel Sponsors
+    -   Registrasi Pengguna
+    -   Login Pengguna
+    -   Mendapatkan Data Pengguna Saat Ini
+    -   Memperbarui Data Pengguna
+    -   Logout Pengguna
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   **Note API**:
+    -   Menambahkan Catatan
+    -   Mendapatkan Daftar Catatan
+    -   Mencari Catatan
+    -   Memperbarui Catatan
+    -   Menghapus Catatan
 
-### Premium Partners
+## Instalasi
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Ikuti langkah-langkah berikut untuk menginstal dan menjalankan API:
 
-## Contributing
+1. Clone repository ini.
+2. Instalasi Dependensi, Jalankan perintah `composer install` untuk menginstal semua dependensi yang diperlukan.
+3. Konfigurasi Environment, Salin file `.env.example` menjadi `.env`.
+4. Generate Key Aplikasi, Jalankan perintah `php artisan key:generate` untuk menghasilkan kunci aplikasi
+5. Migrasi Database, Untuk membuat tabel di database, jalankan perintah `php artisan migrate`.
+6. Menjalankan Server, Jalankan server pengembangan Laravel dengan perintah `php artisan serve`. Server akan berjalan di `http://localhost:8000`.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Penggunaan API
 
-## Code of Conduct
+Setelah menginstal dan menjalankan API, Anda dapat menggunakan endpoint berikut untuk berinteraksi dengan API:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **User Endpoints**:
 
-## Security Vulnerabilities
+    -   `POST /api/users` Menambahkan pengguna baru. Mengirimkan data pengguna yang diperlukan untuk pendaftaran.
+    -   `POST /api/users/login` Melakukan login pengguna. Mengirimkan kredensial pengguna (seperti email dan password) untuk otentikasi.
+    -   `GET /api/users/current` Mendapatkan data pengguna saat ini yang sedang login. Mengembalikan informasi pengguna berdasarkan token yang diberikan.
+    -   `PATCH /api/users/current` Memperbarui data pengguna saat ini yang sedang login. Mengirimkan data yang akan diperbarui (seperti nama atau password).
+    -   `DELETE /api/users/logout` Melakukan logout pengguna. Menghapus sesi token otentikasi.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   **Note Endpoints**:
+    -   `POST /api/notes` Menambahkan catatan baru. Mengirimkan data catatan yang diperlukan untuk membuat catatan.
+    -   `GET /api/notes` Mendapatkan daftar semua catatan yang dimiliki oleh pengguna saat ini.
+    -   `GET /api/notes/search` Mencari catatan berdasarkan kriteria tertentu. Menggunakan parameter keyword untuk memfilter catatan.
+    -   `PUT /api/notes/{id}` Memperbarui catatan berdasarkan ID. Mengirimkan data yang akan diperbarui untuk catatan dengan ID yang ditentukan.
+    -   `DELETE /api/notes/{id}` Menghapus catatan berdasarkan ID. Menghapus catatan yang memiliki ID yang ditentukan dari database.
