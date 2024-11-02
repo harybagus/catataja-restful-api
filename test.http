@@ -1,0 +1,77 @@
+### Register User API
+POST http://localhost:8000/api/users
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "bagus@gmail.com",
+    "name": "Bagus Hary",
+    "password": "password"
+}
+
+### Login User API
+POST http://localhost:8000/api/users/login
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "bagus@gmail.com",
+    "password": "password"
+}
+
+### Get Current User API
+GET http://localhost:8000/api/users/current
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+### Update Current User API
+PATCH http://localhost:8000/api/users/current
+Content-Type: application/json
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+{
+    "name": "Bagus Aja"
+}
+
+### Logout User API
+DELETE http://localhost:8000/api/users/logout
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+### Create Note API
+POST http://localhost:8000/api/notes
+Content-Type: application/json
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+{
+    "title": "Belajar RESTful API",
+    "description": "Belajar RESTful API menggunakan Laravel"
+}
+
+### Get Note API
+GET http://localhost:8000/api/notes
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+### Search Note API
+GET http://localhost:8000/api/notes/search?keyword=laravel
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+### Update Note API #1240
+PUT http://localhost:8000/api/notes/1240
+Content-Type: application/json
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
+
+{
+    "title": "Belajar RESTful API",
+    "description": "Belajar membuat RESTful API menggunakan Laravel 10"
+}
+
+### Delete Note API #1240
+DELETE http://localhost:8000/api/notes/1240
+Accept: application/json
+Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
