@@ -31,7 +31,9 @@ Accept: application/json
 Authorization: 9796b85b-ae7d-4d5e-bdeb-f192945a792a
 
 {
-    "name": "Bagus Aja"
+    "name": "Bagus Aja",
+    "current_password": "password",
+    "new_password": "password123"
 }
 
 ### Logout User API

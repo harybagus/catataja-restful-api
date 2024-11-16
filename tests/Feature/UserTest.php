@@ -198,7 +198,8 @@ class UserTest extends TestCase
         $this->patch(
             "/api/users/current",
             [
-                "password" => "new123"
+                "current_password" => "test123",
+                "new_password" => "password123"
             ],
             [
                 "Authorization" => "test"
@@ -223,7 +224,8 @@ class UserTest extends TestCase
             "/api/users/current",
             [
                 "name" => "Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus Bagus",
-                "password" => "123"
+                "current_password" => "password",
+                "new_password" => "123"
             ],
             [
                 "Authorization" => "test"
@@ -234,8 +236,11 @@ class UserTest extends TestCase
                     "name" => [
                         "The name field must not be greater than 100 characters."
                     ],
-                    "password" => [
-                        "The password field must be at least 6 characters."
+                    "new_password" => [
+                        "The new password field must be at least 6 characters."
+                    ],
+                    "current_password" => [
+                        "The current password is incorrect."
                     ]
                 ]
             ]);

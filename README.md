@@ -58,7 +58,7 @@ Setelah menginstal dan menjalankan API, Anda dapat menggunakan endpoint berikut 
     -   `POST /api/users` Menambahkan pengguna baru. Mengirimkan data pengguna yang diperlukan untuk pendaftaran.
     -   `POST /api/users/login` Melakukan login pengguna. Mengirimkan kredensial pengguna (seperti email dan password) untuk otentikasi.
     -   `GET /api/users/current` Mendapatkan data pengguna saat ini yang sedang login. Mengembalikan informasi pengguna berdasarkan token yang diberikan.
-    -   `PATCH /api/users/current` Memperbarui data pengguna saat ini yang sedang login. Mengirimkan data yang akan diperbarui (seperti nama atau password).
+    -   `PATCH /api/users/current` Memperbarui data pengguna saat ini yang sedang login. Mengirimkan data yang akan diperbarui (seperti nama atau password saat ini dan password baru).
     -   `DELETE /api/users/logout` Melakukan logout pengguna. Menghapus sesi token otentikasi.
 
 -   **Note Endpoints**:
