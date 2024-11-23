@@ -26,7 +26,7 @@ class NoteUpdateRequest extends FormRequest
         return [
             "title" => ["required", "max:100"],
             "description" => ["required", "max:255"],
-            "pinned" => ["nullable"]
+            "pinned" => ["nullable", "in:true,false"]
         ];
     }
 
