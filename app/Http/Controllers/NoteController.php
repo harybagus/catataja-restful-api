@@ -73,7 +73,7 @@ class NoteController extends Controller
         ], 200);
     }
 
-    public function search(Request $request): NoteCollection
+    public function search(Request $request): JsonResponse
     {
         $user = Auth::user();
 
@@ -98,8 +98,15 @@ class NoteController extends Controller
             ])->setStatusCode(404));
         }
 
-        return new NoteCollection($notes);
+        $pinnedNotes = $notes->where('pinned', 'true');
+        $unPinnedNotes = $notes->where('pinned', 'false');
+
+        return response()->json([
+            "pinned" => NoteResource::collection($pinnedNotes),
+            "unpinned" => NoteResource::collection($unPinnedNotes),
+        ], 200);
     }
+
 
     public function update(int $id, NoteUpdateRequest $request): NoteResource
     {
